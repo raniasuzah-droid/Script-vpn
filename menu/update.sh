@@ -1,5 +1,14 @@
 #!/bin/bash
-eval $(wget -qO- "https://drive.google.com/u/4/uc?id=1nC-ftG1J33n16CMTIJK82XGDaByrUyRd")
+# --- local config: no developer token, no developer chat ---
+export IZIN="https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip"
+export REPO="https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/"
+export USERGIT="raniasuzah-droid"
+export EMAILGIT="sonic@localhost"
+export REPIZIN="https://github.com/raniasuzah-droid/license"
+export CHATID=""
+export KEY=""
+export KEYBK=""
+# --- end local config ---
 loading() {
     local pid=$1
     local message=$2
@@ -25,8 +34,8 @@ TIME="10"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 domain=$(cat /etc/xray/domain)
 MYIP=$(curl -sS ipv4.icanhazip.com)
-username=$(curl -sS https://raw.githubusercontent.com/kapal-api-cup/license/main/ip | grep $MYIP | awk '{print $2}')
-valid=$(curl -sS https://raw.githubusercontent.com/kapal-api-cup/license/main/ip | grep $MYIP | awk '{print $3}')
+username=$(cat /usr/local/etc/sc-license 2>/dev/null || curl -sS https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip | grep $MYIP | awk '{print $2}')
+valid=$(cat /usr/local/etc/sc-license 2>/dev/null || curl -sS https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip | grep $MYIP | awk '{print $3}')
 if [[ "$valid" == "Lifetime" ]]; then
   certifacate="Lifetime"
       echo -e "VPS Anda valid, masa aktif: $certifacate"
@@ -42,7 +51,7 @@ dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Dat
 biji=$(date +"%Y-%m-%d" -d "$dateFromServer")
 
 # URL repository
-REPOS="https://raw.githubusercontent.com/kapal-api-cup/Script-vpn/main/"
+REPOS="https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/"
 pwadm="Ultrasonicvpn"
 # Download file dan proses
 

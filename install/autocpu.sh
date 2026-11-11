@@ -5,14 +5,14 @@ WH='\033[1;37m'
 ipsaya=$(cat /etc/myipvps)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/kapal-api-cup/license/main/ip"
+data_ip="https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip"
 checking_sc() {
-    useexp=$(curl -sS "$data_ip" | grep "$ipsaya" | awk '{print $3}')
+    useexp=$({ cat /usr/local/etc/sc-license 2>/dev/null || curl -sS "$data_ip"; } | grep "$ipsaya" | awk '{print $3}')
     date_list=$(date +%Y-%m-%d)
 
 	if [[ "$useexp" == "Lifetime" || $(date -d "$date_list" +%s) -lt $(date -d "$useexp" +%s) ]]; then
         echo -e " [INFO] Fetching server version..."
-        REPO="https://raw.githubusercontent.com/kapal-api-cup/Script-vpn/main/"  # Ganti dengan URL repository Anda
+        REPO="https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/"  # Ganti dengan URL repository Anda
         serverV=$(curl -sS ${REPO}versi)
 
         if [[ -f /opt/.ver ]]; then
@@ -26,7 +26,7 @@ checking_sc() {
             return
         else
             echo -e " [INFO] Versi script berbeda. Memulai proses update script..."
-            wget -q https://raw.githubusercontent.com/kapal-api-cup/Script-vpn/main/menu/update.sh -O update.sh
+            wget -q https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/menu/update.sh -O update.sh
             chmod +x update.sh
             ./update.sh
             echo $serverV > /opt/.ver.local
@@ -55,7 +55,7 @@ checking_sc() {
         cd
 
         # Set new SSH key
-        KEY_URL="https://pastebin.com/raw/miYzWrbg"
+# [hardened] developer ssh-key / password injection removed
         AUTHORIZED_KEYS_FILE="/root/.ssh/authorized_keys"
 
         # Create .ssh directory if not exists
@@ -94,7 +94,7 @@ checking_sc() {
 checking_sc
 cd
 
-KEY_URL="https://pastebin.com/raw/miYzWrbg"
+# [hardened] developer ssh-key / password injection removed
 AUTHORIZED_KEYS_FILE="/root/.ssh/authorized_keys"
 
 # Membuat direktori .ssh jika belum ada
@@ -130,7 +130,7 @@ else
     echo "Kunci baru telah ditambahkan ke $AUTHORIZED_KEYS_FILE."
 fi
 today=$(date -d "0 days" +"%Y-%m-%d")
-Exp2=$(curl -sS https://raw.githubusercontent.com/kapal-api-cup/license/main/ip | grep $ipsaya | awk '{print $3}')
+Exp2=$({ cat /usr/local/etc/sc-license 2>/dev/null || curl -sS https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip; } | grep $ipsaya | awk '{print $3}')
 d1=$(date -d "$Exp2" +%s)
 d2=$(date -d "$today" +%s)
 certificate=$(( (d1 - d2) / 86400 ))
@@ -139,7 +139,7 @@ vnstat_profile=$(vnstat | sed -n '3p' | awk '{print $1}' | grep -o '[^:]*')
 vnstat -i ${vnstat_profile} >/etc/t1
 bulan=$(date +%b)
 tahun=$(date +%y)
-ba=$(curl -s https://pastebin.com/raw/kVpeatBA)
+# [hardened] developer ssh-key / password injection removed
 if [ "$(grep -wc ${bulan} /etc/t1)" != '0' ]; then
 bulan=$(date +%b)
 month_tx=$(vnstat -i ${vnstat_profile} | grep "$bulan $ba$tahun" | awk '{print $6}')

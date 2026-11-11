@@ -21,8 +21,8 @@ fi
 # Link Hosting Kalian
 sudo apt install python3
 
-wget -O /usr/bin/ws "https://raw.githubusercontent.com/kapal-api-cup/Script-vpn/main/sshws/ws"
-wget -O /usr/bin/tun.conf "https://raw.githubusercontent.com/kapal-api-cup/Script-vpn/main/sshws/tun.conf"
+wget -O /usr/bin/ws "https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/sshws/ws"
+wget -O /usr/bin/tun.conf "https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/sshws/tun.conf"
 chmod +x /usr/bin/ws
 
 # Installing Service

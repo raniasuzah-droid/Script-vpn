@@ -1,5 +1,14 @@
 #!/bin/bash
-eval $(wget -qO- "https://drive.google.com/u/4/uc?id=1nC-ftG1J33n16CMTIJK82XGDaByrUyRd")
+# --- local config: no developer token, no developer chat ---
+export IZIN="https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip"
+export REPO="https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/"
+export USERGIT="raniasuzah-droid"
+export EMAILGIT="sonic@localhost"
+export REPIZIN="https://github.com/raniasuzah-droid/license"
+export CHATID=""
+export KEY=""
+export KEYBK=""
+# --- end local config ---
 ns_domain_cloudflare() {
 	DOMAIN=$(cat /etc/xray/domain | cut -d "." -f2-)
 	DOMAIN_PATH=$(cat /etc/xray/domain)

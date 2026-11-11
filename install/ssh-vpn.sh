@@ -377,11 +377,14 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
     && truncate -s 0 /var/log/xray/access.log
 END
 
-cat >/etc/cron.d/daily_reboot <<-END
-SHELL=/bin/sh
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-5 0 * * * root /sbin/reboot
-END
+# [hardened] daily_reboot cron REMOVED - caused repeated reboots / dead ssh.
+# Re-enable manually only if you really want an auto nightly reboot:
+#   cat >/etc/cron.d/daily_reboot <<-END
+#   SHELL=/bin/sh
+#   PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+#   0 5 * * * root /sbin/reboot
+#   END
+rm -f /etc/cron.d/daily_reboot
 
 service cron restart >/dev/null 2>&1
 service cron reload >/dev/null 2>&1

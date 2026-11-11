@@ -1,18 +1,25 @@
 #!/bin/bash
 sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null 2>&1
 sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null 2>&1
-eval $(wget -qO- "https://drive.google.com/u/4/uc?id=1nC-ftG1J33n16CMTIJK82XGDaByrUyRd")
+# --- local config: no developer token, no developer chat ---
+export IZIN="https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip"
+export REPO="https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/"
+export USERGIT="raniasuzah-droid"
+export EMAILGIT="sonic@localhost"
+export REPIZIN="https://github.com/raniasuzah-droid/license"
+export CHATID=""
+export KEY=""
+export KEYBK=""
+# --- end local config ---
 function CEKIP () {
-MYIP=$(curl -sS ipv4.icanhazip.com)
-IPVPS=$(curl -sS $IZIN | grep $MYIP | awk '{print $4}')
-if [[ $MYIP == $IPVPS ]]; then
+clear
+echo -e "${green}┌────────────────────────────────────────────┐${NC}"
+echo -e "${green}│        U L T R A S O N I C   V P N         │${NC}"
+echo -e "${green}│      LICENSE: LIFETIME - SELF HOSTED       │${NC}"
+echo -e "${green}└────────────────────────────────────────────┘${NC}"
+sleep 1
 domain
 Pasang
-else
-  key2
-  domain
-  Pasang
-fi
 }
 clear
 red='\e[1;31m'
@@ -65,78 +72,7 @@ else
     sed -i "/$localip/c\\$localip $name" /etc/hosts
 fi
 
-function key2(){
-    command -v git >/dev/null 2>&1 || apt install git -y >/dev/null 2>&1 
-    command -v curl >/dev/null 2>&1 || apt install curl -y >/dev/null 2>&1 
-    echo -e "${green}┌──────────────────────────────────────────┐${NC}"
-    echo -e "${green}│ \033[1;37mPlease select your choice              ${green}│${NC}"
-    echo -e "${green}└──────────────────────────────────────────┘${NC}"
-    echo -e "${green}┌──────────────────────────────────────────┐${NC}"
-    echo -e "${green}│  [ 1 ]  \033[1;37mTRIAL 1 HARI      ${NC}"
-    echo -e "${green}│                                          ${NC}"
-    echo -e "${green}│  [ 2 ]  \033[1;37mMEMBER SUDAH BELI     ${NC}"
-    echo -e "${green}└──────────────────────────────────────────┘${NC}"
-
-    # Validasi input
-    while [[ ! "$key" =~ ^[12]$ ]]; do
-        read -rp "   Please select numbers 1 atau 2 : " key
-    done
-
-    MYIP=$(curl -sS ipv4.icanhazip.com)
-    hhari=$(date -d "1 days" +"%Y-%m-%d")
-
-    # Pilihan 1: Trial
-    if [[ $key == "1" ]]; then
-        rm -rf /root/license
-        git clone $REPIZIN >/dev/null 2>&1
-        cd license || exit
-        echo "### $author $hhari $MYIP @trial" >> ip
-        git config --global user.email "${EMAILGIT}"
-        git config --global user.name "${USERGIT}"
-        git add ip
-        git commit -m "register"
-        git branch -M main
-        git remote add origin https://github.com/${USERGIT}/license
-        git push -f https://${GH}@github.com/${USERGIT}/license
-        cd
-        rm -rf /root/license
-        clear
-    fi
-
-    # Pilihan 2: Member
-    if [[ $key == "2" ]]; then
-        clear
-        echo -e "${green}┌──────────────────────────────────────────┐${NC}"
-        echo -e "${green}│              MASUKKAN LICENSE KEY        │${NC}"
-        echo -e "${green}└──────────────────────────────────────────┘${NC}"
-        echo " "
-
-        while [[ ! "$kode" =~ ^[a-zA-Z0-9_.-]+$ ]]; do
-            read -rp "Masukan Nama Kamu Disini tanpa spasi: " kode
-        done
-
-        if [[ $kode == "ULVIP" ]]; then
-            hhari=$(date -d "30 days" +"%Y-%m-%d")
-            rm -rf /root/license
-            git clone $REPIZIN >/dev/null 2>&1
-            cd license || exit
-            echo "### $author $hhari $MYIP @VIP" >> ip
-            git config --global user.email "${EMAILGIT}"
-            git config --global user.name "${USERGIT}"
-            git add ip
-            git commit -m "register"
-            git branch -M main
-            git remote add origin https://github.com/${USERGIT}/license
-            git push -f https://${GH}@github.com/${USERGIT}/license
-            cd
-            rm -rf /root/license
-        else
-            echo -e "❌ KODE SALAH, silakan coba lagi."
-            sleep 1
-            key2
-        fi
-    fi
-}
+# [hardened] key2() removed - no developer licence registration
 function domain(){
 fun_bar() {
     CMD[0]="$1"
@@ -430,7 +366,7 @@ TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
 MODEL2=$(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')
 MYIP=$(curl -sS ipv4.icanhazip.com)
-IZIND=$(curl -sS $IZIN | grep $MYIP | awk '{print $3}' )
+IZIND=$(cat /usr/local/etc/sc-license 2>/dev/null || curl -sS $IZIN | grep $MYIP | awk '{print $3}' )
 d1=$(date -d "$IZIND" +%s)
 d2=$(date -d "$today" +%s)
 EXP=$(( (d1 - d2) / 86400 ))
@@ -490,6 +426,25 @@ fi
 
 # Terapkan perubahan
 sysctl -p >/dev/null 2>&1
+
+# --- [hardened] bootstrap local lifetime license (no developer dependency) ---
+mkdir -p /usr/local/etc
+MYIPBOOT=$(curl -sS ipv4.icanhazip.com)
+if [ ! -s /usr/local/etc/sc-license ]; then
+  printf '### %s 2099-12-31 %s ON 999 VIP\n' "${author:-local}" "$MYIPBOOT" > /usr/local/etc/sc-license
+  chmod 644 /usr/local/etc/sc-license
+fi
+cat > /usr/local/bin/sc-license-get <<'EOFLIC'
+#!/bin/bash
+if [ -s /usr/local/etc/sc-license ]; then
+  cat /usr/local/etc/sc-license
+else
+  curl -sS https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip
+fi
+EOFLIC
+chmod +x /usr/local/bin/sc-license-get
+# --- end bootstrap ---
+
 CEKIP
 Installasi
 cat> /root/.profile << END
@@ -539,8 +494,7 @@ echo  ""
 sleep 4
 echo -e "[ ${yell}WARNING${NC} ] Do you want to reboot now ? (y/n)? "
 read answer
-if [ "$answer" == "${answer#[Yy]}" ] ;then
-exit 0
-else
-reboot
-fi
+case "$answer" in
+  [Yy]*) reboot ;;
+  *)     echo -e "  [OK] Reboot dilewati. Jalankan 'reboot' manual kalau perlu."; exit 0 ;;
+esac

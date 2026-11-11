@@ -2,7 +2,16 @@
 apt install jq curl -y
 DO=$(cat /etc/xray/domain | cut -d "." -f2-)
 SUB=$(cat /etc/xray/domain | cut -d "." -f1)
-eval $(wget -qO- "https://drive.google.com/u/4/uc?id=1nC-ftG1J33n16CMTIJK82XGDaByrUyRd")
+# --- local config: no developer token, no developer chat ---
+export IZIN="https://raw.githubusercontent.com/raniasuzah-droid/license/main/ip"
+export REPO="https://raw.githubusercontent.com/raniasuzah-droid/Script-vpn/main/"
+export USERGIT="raniasuzah-droid"
+export EMAILGIT="sonic@localhost"
+export REPIZIN="https://github.com/raniasuzah-droid/license"
+export CHATID=""
+export KEY=""
+export KEYBK=""
+# --- end local config ---
 # Memeriksa apakah DO kosong, jika kosong maka isi dengan 'palon.store'
 if [[ -z "$DO" ]]; then
     DO="vpnnewbie.my.id"
